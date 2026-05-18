@@ -1,0 +1,77 @@
+[
+  {
+    "id": "TC-001",
+    "scenario": "Valid OTP and Password Reset",
+    "type": "Functional",
+    "priority": "High",
+    "steps": [
+      "Navigate to the login page",
+      "Click on 'Forgot Password'",
+      "Enter a valid registered email address",
+      "Submit the request",
+      "Check the email for the OTP",
+      "Enter the received OTP",
+      "Set a new valid password",
+      "Confirm the new password"
+    ],
+    "expected": "Password is successfully reset and user is redirected to the login page with a success message."
+  },
+  {
+    "id": "TC-002",
+    "scenario": "Invalid OTP Entry",
+    "type": "Negative",
+    "priority": "Medium",
+    "steps": [
+      "Navigate to the login page",
+      "Click on 'Forgot Password'",
+      "Enter a valid registered email address",
+      "Submit the request",
+      "Check the email for the OTP",
+      "Enter an incorrect OTP",
+      "Attempt to set a new password"
+    ],
+    "expected": "System displays an error message indicating that the OTP is invalid."
+  },
+  {
+    "id": "TC-003",
+    "scenario": "OTP Expiry Test",
+    "type": "Edge Case",
+    "priority": "Medium",
+    "steps": [
+      "Navigate to the login page",
+      "Click on 'Forgot Password'",
+      "Enter a valid registered email address",
+      "Submit the request",
+      "Wait for more than 10 minutes",
+      "Enter the received OTP",
+      "Attempt to set a new password"
+    ],
+    "expected": "System displays an error message indicating that the OTP has expired."
+  },
+  {
+    "id": "TC-004",
+    "scenario": "Unregistered Email Address",
+    "type": "Negative",
+    "priority": "High",
+    "steps": [
+      "Navigate to the login page",
+      "Click on 'Forgot Password'",
+      "Enter an unregistered email address",
+      "Submit the request"
+    ],
+    "expected": "System displays an error message indicating that the email is not registered."
+  },
+  {
+    "id": "TC-005",
+    "scenario": "SQL Injection Attempt in Email Field",
+    "type": "Security",
+    "priority": "High",
+    "steps": [
+      "Navigate to the login page",
+      "Click on 'Forgot Password'",
+      "Enter a malicious SQL injection string in the email field",
+      "Submit the request"
+    ],
+    "expected": "System should reject the input and display an appropriate error message without executing any SQL commands."
+  }
+]
