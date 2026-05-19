@@ -8,11 +8,11 @@
       "Navigate to the login page",
       "Click on 'Forgot Password'",
       "Enter a valid registered email address",
-      "Submit the request",
+      "Click 'Send OTP'",
       "Check the email for the OTP",
-      "Enter the received OTP",
-      "Set a new valid password",
-      "Confirm the new password"
+      "Enter the received OTP in the provided field",
+      "Set a new password that meets the criteria",
+      "Click 'Reset Password'"
     ],
     "expected": "Password is successfully reset and user is redirected to the login page with a success message."
   },
@@ -25,12 +25,11 @@
       "Navigate to the login page",
       "Click on 'Forgot Password'",
       "Enter a valid registered email address",
-      "Submit the request",
-      "Check the email for the OTP",
+      "Click 'Send OTP'",
       "Enter an incorrect OTP",
-      "Attempt to set a new password"
+      "Click 'Verify OTP'"
     ],
-    "expected": "System displays an error message indicating that the OTP is invalid."
+    "expected": "An error message is displayed indicating that the OTP is invalid or has expired."
   },
   {
     "id": "TC-003",
@@ -41,25 +40,29 @@
       "Navigate to the login page",
       "Click on 'Forgot Password'",
       "Enter a valid registered email address",
-      "Submit the request",
+      "Click 'Send OTP'",
       "Wait for more than 10 minutes",
-      "Enter the received OTP",
-      "Attempt to set a new password"
+      "Enter the received OTP in the provided field",
+      "Click 'Verify OTP'"
     ],
-    "expected": "System displays an error message indicating that the OTP has expired."
+    "expected": "An error message is displayed indicating that the OTP has expired."
   },
   {
     "id": "TC-004",
-    "scenario": "Unregistered Email Address",
-    "type": "Negative",
-    "priority": "High",
+    "scenario": "Multiple OTP Requests",
+    "type": "Edge Case",
+    "priority": "Low",
     "steps": [
       "Navigate to the login page",
       "Click on 'Forgot Password'",
-      "Enter an unregistered email address",
-      "Submit the request"
+      "Enter a valid registered email address",
+      "Click 'Send OTP'",
+      "Without verifying the first OTP, request another OTP",
+      "Check the email for the second OTP",
+      "Enter the second OTP in the provided field",
+      "Click 'Verify OTP'"
     ],
-    "expected": "System displays an error message indicating that the email is not registered."
+    "expected": "The system accepts the second OTP and allows the user to proceed with the password reset process."
   },
   {
     "id": "TC-005",
@@ -69,9 +72,9 @@
     "steps": [
       "Navigate to the login page",
       "Click on 'Forgot Password'",
-      "Enter a malicious SQL injection string in the email field",
-      "Submit the request"
+      "Enter a malicious input in the email field (e.g., 'test@example.com' OR '1'='1')",
+      "Click 'Send OTP'"
     ],
-    "expected": "System should reject the input and display an appropriate error message without executing any SQL commands."
+    "expected": "The system should reject the input and display an error message, not sending an OTP."
   }
 ]

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "TC001",
+    "scenario": "Convert USD to EUR with valid amount",
+    "type": "Functional",
+    "priority": "High",
+    "steps": [
+      "Open the currency converter page.",
+      "Select 'USD' as the source currency.",
+      "Select 'EUR' as the target currency.",
+      "Enter '100' in the amount field.",
+      "Click the 'Convert' button."
+    ],
+    "expected": "The converted amount should be displayed correctly (e.g., 85.00 EUR)."
+  },
+  {
+    "id": "TC002",
+    "scenario": "Convert with an invalid amount (negative number)",
+    "type": "Negative",
+    "priority": "Medium",
+    "steps": [
+      "Open the currency converter page.",
+      "Select 'USD' as the source currency.",
+      "Select 'EUR' as the target currency.",
+      "Enter '-100' in the amount field.",
+      "Click the 'Convert' button."
+    ],
+    "expected": "An error message should be displayed indicating that the amount cannot be negative."
+  },
+  {
+    "id": "TC003",
+    "scenario": "Convert with an extremely large amount",
+    "type": "Edge Case",
+    "priority": "Low",
+    "steps": [
+      "Open the currency converter page.",
+      "Select 'USD' as the source currency.",
+      "Select 'EUR' as the target currency.",
+      "Enter '999999999999999' in the amount field.",
+      "Click the 'Convert' button."
+    ],
+    "expected": "The system should handle the large number and display the converted amount without crashing."
+  },
+  {
+    "id": "TC004",
+    "scenario": "Check for SQL injection vulnerability",
+    "type": "Security",
+    "priority": "High",
+    "steps": [
+      "Open the currency converter page.",
+      "Select 'USD' as the source currency.",
+      "Select 'EUR' as the target currency.",
+      "Enter '100 OR '1'='1' --' in the amount field.",
+      "Click the 'Convert' button."
+    ],
+    "expected": "The system should not execute any unintended SQL commands and should display an appropriate error message."
+  },
+  {
+    "id": "TC005",
+    "scenario": "Convert with non-numeric characters in the amount field",
+    "type": "Negative",
+    "priority": "Medium",
+    "steps": [
+      "Open the currency converter page.",
+      "Select 'USD' as the source currency.",
+      "Select 'EUR' as the target currency.",
+      "Enter 'abc' in the amount field.",
+      "Click the 'Convert' button."
+    ],
+    "expected": "An error message should be displayed indicating that the amount must be a numeric value."
+  }
+]
