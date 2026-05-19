@@ -1,72 +1,62 @@
 [
   {
     "id": "TC001",
-    "scenario": "Convert USD to EUR with valid amount",
+    "scenario": "Valid user login with correct credentials",
     "type": "Functional",
     "priority": "High",
     "steps": [
-      "Open the currency converter page.",
-      "Select 'USD' as the source currency.",
-      "Select 'EUR' as the target currency.",
-      "Enter '100' in the amount field.",
-      "Click the 'Convert' button."
+      "Open the banking login page.",
+      "Enter a valid username and password.",
+      "Click the 'Login' button."
     ],
-    "expected": "The converted amount should be displayed correctly (e.g., 85.00 EUR)."
+    "expected": "The user should be redirected to the dashboard page."
   },
   {
     "id": "TC002",
-    "scenario": "Convert with an invalid amount (negative number)",
+    "scenario": "Invalid user login with incorrect password",
     "type": "Negative",
-    "priority": "Medium",
+    "priority": "High",
     "steps": [
-      "Open the currency converter page.",
-      "Select 'USD' as the source currency.",
-      "Select 'EUR' as the target currency.",
-      "Enter '-100' in the amount field.",
-      "Click the 'Convert' button."
+      "Open the banking login page.",
+      "Enter a valid username and an incorrect password.",
+      "Click the 'Login' button."
     ],
-    "expected": "An error message should be displayed indicating that the amount cannot be negative."
+    "expected": "An error message should be displayed indicating that the password is incorrect."
   },
   {
     "id": "TC003",
-    "scenario": "Convert with an extremely large amount",
-    "type": "Edge Case",
-    "priority": "Low",
-    "steps": [
-      "Open the currency converter page.",
-      "Select 'USD' as the source currency.",
-      "Select 'EUR' as the target currency.",
-      "Enter '999999999999999' in the amount field.",
-      "Click the 'Convert' button."
-    ],
-    "expected": "The system should handle the large number and display the converted amount without crashing."
-  },
-  {
-    "id": "TC004",
-    "scenario": "Check for SQL injection vulnerability",
-    "type": "Security",
-    "priority": "High",
-    "steps": [
-      "Open the currency converter page.",
-      "Select 'USD' as the source currency.",
-      "Select 'EUR' as the target currency.",
-      "Enter '100 OR '1'='1' --' in the amount field.",
-      "Click the 'Convert' button."
-    ],
-    "expected": "The system should not execute any unintended SQL commands and should display an appropriate error message."
-  },
-  {
-    "id": "TC005",
-    "scenario": "Convert with non-numeric characters in the amount field",
+    "scenario": "Empty fields in login form",
     "type": "Negative",
     "priority": "Medium",
     "steps": [
-      "Open the currency converter page.",
-      "Select 'USD' as the source currency.",
-      "Select 'EUR' as the target currency.",
-      "Enter 'abc' in the amount field.",
-      "Click the 'Convert' button."
+      "Open the banking login page.",
+      "Leave both the username and password fields empty.",
+      "Click the 'Login' button."
     ],
-    "expected": "An error message should be displayed indicating that the amount must be a numeric value."
+    "expected": "An error message should be displayed indicating that both fields are required."
+  },
+  {
+    "id": "TC004",
+    "scenario": "SQL Injection attempt in the username field",
+    "type": "Security",
+    "priority": "Critical",
+    "steps": [
+      "Open the banking login page.",
+      "Enter a SQL injection payload (e.g., 'admin' OR '1'='1) in the username field.",
+      "Click the 'Login' button."
+    ],
+    "expected": "The system should not allow the login and should display an appropriate error message or log the attempt."
+  },
+  {
+    "id": "TC005",
+    "scenario": "Maximum number of failed login attempts",
+    "type": "Edge Case",
+    "priority": "High",
+    "steps": [
+      "Open the banking login page.",
+      "Enter a valid username and an incorrect password.",
+      "Repeat the previous step 5 times (or the maximum number of allowed attempts)."
+    ],
+    "expected": "The account should be locked, and a message should be displayed indicating that the account has been locked due to multiple failed login attempts."
   }
 ]
