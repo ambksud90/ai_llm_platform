@@ -2,61 +2,138 @@ import requests
 import time
 import logging
 import os
-from dotenv import load_dotenv
 
+from requests.exceptions import ReadTimeout, ConnectionError, HTTPError
+from dotenv import load_dotenv
 
 load_dotenv()
 
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
-
 logger = logging.getLogger(__name__)
 
-# API Config
-HF_TOKEN = os.getenv("HF_TOKEN")
-
-API_URL = "https://router.huggingface.co/v1/chat/completions"
-MODEL = "Qwen/Qwen2.5-72B-Instruct"
+HF_TOKEN  = os.getenv("HF_TOKEN")
+API_URL   = "https://router.huggingface.co/v1/chat/completions"
 
 HEADERS = {
     "Authorization": f"Bearer {HF_TOKEN}",
-    "Content-Type": "application/json",
+    "Content-Type":  "application/json",
 }
 
+# Retry config
+MAX_RETRIES       = 3
+RETRY_WAIT        = 30   # seconds between retries
+REQUEST_TIMEOUT   = 300  # seconds — enough for 8 000-token generation on 7B model
 
-def call_api(payload: dict, retries: int = 3, wait: int = 25) -> str:
+# Status codes that are worth retrying
+RETRYABLE_CODES = {503, 502, 429, 504}
+
+
+def call_api(payload: dict,
+             retries: int = MAX_RETRIES,
+             wait:    int = RETRY_WAIT) -> str:
+    """
+    Call the HuggingFace inference router with retry logic.
+
+    Retries on:
+      - HTTP 503 / 502  (model loading or gateway error)
+      - HTTP 429        (rate limit — backs off with longer wait)
+      - ReadTimeout     (model took too long — retries with same timeout)
+      - ConnectionError (transient network blip)
+
+    Raises RuntimeError after all retries are exhausted.
+    """
+
+    # ── Guard: token present ──────────────────────────────────────────────
+    if not HF_TOKEN:
+        raise EnvironmentError(
+            "HF_TOKEN is not set. Add it to your .env file."
+        )
+
+    # ── Detect model from payload (single source of truth = prompt_builder) ──
+    model = payload.get("model", "unknown-model")
+
+    last_error = None
 
     for attempt in range(1, retries + 1):
 
-        logger.info(f"Attempt {attempt}/{retries} using model: {MODEL}")
+        logger.info(f"Attempt {attempt}/{retries} — model: {model}")
 
-        response = requests.post(
-            API_URL,
-            headers=HEADERS,
-            json=payload,
-            timeout=90
-        )
+        try:
+            response = requests.post(
+                API_URL,
+                headers=HEADERS,
+                json=payload,
+                timeout=REQUEST_TIMEOUT
+            )
 
-        if response.status_code == 200:
+            # ── Success ───────────────────────────────────────────────────
+            if response.status_code == 200:
+                logger.info("API request successful")
+                content = response.json()["choices"][0]["message"]["content"]
+                return content.strip()
 
-            logger.info("API request successful")
+            # ── Rate limited — back off longer ────────────────────────────
+            if response.status_code == 429:
+                retry_after = int(response.headers.get("Retry-After", wait * 2))
+                logger.warning(
+                    f"Rate limited (429). Waiting {retry_after}s before retry..."
+                )
+                time.sleep(retry_after)
+                last_error = f"HTTP 429 rate limit"
+                continue
 
-            return response.json()["choices"][0]["message"]["content"].strip()
+            # ── Model loading / gateway errors — short wait then retry ───
+            if response.status_code in RETRYABLE_CODES:
+                logger.warning(
+                    f"HTTP {response.status_code} — model may be loading. "
+                    f"Retrying in {wait}s..."
+                )
+                time.sleep(wait)
+                last_error = f"HTTP {response.status_code}"
+                continue
 
-        if response.status_code == 503:
+            # ── Non-retryable error (400, 401, 403, 404, etc.) ───────────
+            logger.error(f"Non-retryable API error: HTTP {response.status_code}")
+            logger.error(f"Response: {response.text[:500]}")
 
-            logger.warning(f"Model loading... retrying in {wait} seconds")
+            if response.status_code == 401:
+                raise RuntimeError(
+                    "Authentication failed (HTTP 401). Check your HF_TOKEN in .env."
+                )
+            if response.status_code == 400:
+                raise RuntimeError(
+                    f"Bad request (HTTP 400). Check your payload.\n"
+                    f"Details: {response.text[:300]}"
+                )
 
-            time.sleep(wait)
+            raise RuntimeError(
+                f"API error HTTP {response.status_code}: {response.text[:300]}"
+            )
 
+        # ── Timeout — retry, don't crash ──────────────────────────────────
+        except ReadTimeout:
+            logger.warning(
+                f"Request timed out after {REQUEST_TIMEOUT}s "
+                f"(attempt {attempt}/{retries}). "
+                f"Retrying in {wait}s..."
+            )
+            last_error = f"ReadTimeout after {REQUEST_TIMEOUT}s"
+            if attempt < retries:
+                time.sleep(wait)
             continue
 
-        logger.error(f"API Error {response.status_code}")
-        logger.error(response.text[:300])
+        # ── Network blip — retry ──────────────────────────────────────────
+        except ConnectionError as e:
+            logger.warning(
+                f"Connection error (attempt {attempt}/{retries}): {e}. "
+                f"Retrying in {wait}s..."
+            )
+            last_error = str(e)
+            if attempt < retries:
+                time.sleep(wait)
+            continue
 
-        raise RuntimeError(f"API Error {response.status_code}")
-
-    raise RuntimeError("Model unavailable after retries")
+    # ── All retries exhausted ─────────────────────────────────────────────
+    raise RuntimeError(
+        f"Pipeline failed after {retries} attempts. "
+        f"Last error: {last_error}"
+    )

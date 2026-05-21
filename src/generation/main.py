@@ -5,6 +5,7 @@ from api_client import call_api
 from parser import extract_json
 from formatter import print_test_cases
 from prompt_builder import build_prompt
+from pdf_loader import extract_pdf_text
 
 # Logging setup
 logging.basicConfig(
@@ -15,13 +16,9 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def get_requirement() -> str:
 
-    print("\nEnter software requirement:\n")
 
-    requirement = input("> ")
-
-    return requirement
+pdf_path = "/Users/maheshmarathona/Desktop/Desktop/Workspace/ai_llm_platform/src/generation/requirements/requirment.pdf"
 
 
 try:
@@ -29,7 +26,7 @@ try:
     logger.info("Starting AI test generation pipeline")
 
     # Dynamic user input
-    requirement = get_requirement()
+    requirement = extract_pdf_text(pdf_path)
 
     # Build prompt dynamically
     payload = build_prompt(requirement)

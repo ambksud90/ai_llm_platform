@@ -1,62 +1,1007 @@
 [
   {
-    "id": "TC001",
-    "scenario": "Valid user login with correct credentials",
-    "type": "Functional",
+    "id": "TC_001",
+    "module": "User Login",
+    "category": "Functional",
+    "test_type": "Happy Path",
     "priority": "High",
+    "scenario": "User logs in with valid credentials.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements.",
     "steps": [
-      "Open the banking login page.",
-      "Enter a valid username and password.",
-      "Click the 'Login' button."
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a valid username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is redirected to the dashboard."
     ],
-    "expected": "The user should be redirected to the dashboard page."
+    "test_data": {
+      "username": "amara.okonkwo@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is successfully logged in and redirected to the dashboard.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
   },
   {
-    "id": "TC002",
-    "scenario": "Invalid user login with incorrect password",
-    "type": "Negative",
+    "id": "TC_002",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
     "priority": "High",
+    "scenario": "User enters an invalid username.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements.",
     "steps": [
-      "Open the banking login page.",
-      "Enter a valid username and an incorrect password.",
-      "Click the 'Login' button."
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter an invalid username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating an invalid username."
     ],
-    "expected": "An error message should be displayed indicating that the password is incorrect."
+    "test_data": {
+      "username": "invalid_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating an invalid username.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
   },
   {
-    "id": "TC003",
-    "scenario": "Empty fields in login form",
-    "type": "Negative",
-    "priority": "Medium",
-    "steps": [
-      "Open the banking login page.",
-      "Leave both the username and password fields empty.",
-      "Click the 'Login' button."
-    ],
-    "expected": "An error message should be displayed indicating that both fields are required."
-  },
-  {
-    "id": "TC004",
-    "scenario": "SQL Injection attempt in the username field",
-    "type": "Security",
-    "priority": "Critical",
-    "steps": [
-      "Open the banking login page.",
-      "Enter a SQL injection payload (e.g., 'admin' OR '1'='1) in the username field.",
-      "Click the 'Login' button."
-    ],
-    "expected": "The system should not allow the login and should display an appropriate error message or log the attempt."
-  },
-  {
-    "id": "TC005",
-    "scenario": "Maximum number of failed login attempts",
-    "type": "Edge Case",
+    "id": "TC_003",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
     "priority": "High",
+    "scenario": "User enters an invalid password.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements.",
     "steps": [
-      "Open the banking login page.",
-      "Enter a valid username and an incorrect password.",
-      "Repeat the previous step 5 times (or the maximum number of allowed attempts)."
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a valid username.",
+      "Enter an invalid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating an invalid password."
     ],
-    "expected": "The account should be locked, and a message should be displayed indicating that the account has been locked due to multiple failed login attempts."
+    "test_data": {
+      "username": "amara.okonkwo@testbank.com",
+      "password": "invalid_password"
+    },
+    "expected_result": "User is shown an error message indicating an invalid password.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_004",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_005",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again within the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_006",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_007",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_008",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_009",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_010",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_011",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_012",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_013",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_014",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_015",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_016",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_017",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_018",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_019",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_020",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_021",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_022",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_023",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_024",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_025",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_026",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_027",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_028",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_029",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_030",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_031",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_032",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_033",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_034",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_035",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_036",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_037",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_038",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ],
+    "test_data": {
+      "username": "locked_user@testbank.com",
+      "password": "P@ssw0rd!"
+    },
+    "expected_result": "User is shown an error message indicating the account is locked.",
+    "actual_result": "Pending",
+    "status": "Not Executed",
+    "risk_level": "High",
+    "automation_candidate": true
+  },
+  {
+    "id": "TC_039",
+    "module": "User Login",
+    "category": "Negative",
+    "test_type": "Invalid Input",
+    "priority": "High",
+    "scenario": "User enters a username that has been locked and attempts to log in again after the lockout period.",
+    "preconditions": "User has a valid account with a unique username and a password that meets the complexity requirements, and the account has been locked after 3 failed login attempts.",
+    "steps": [
+      "Open the Online Banking Web Application in a browser.",
+      "Click on the 'Login' button.",
+      "Enter a locked username.",
+      "Enter a valid password.",
+      "Click on the 'Login' button.",
+      "Verify that the user is shown an error message indicating the account is locked."
+    ]
   }
 ]
