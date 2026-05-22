@@ -2,7 +2,7 @@
 
 **Enterprise AI platform for intelligent test case generation and evaluation using LLMs and RAG.**
 
-Given a plain-language software requirement, the platform calls an LLM, parses the structured response, and outputs a formatted, saved set of test cases — ready for QA pipelines or manual review.
+Given a plain-language software requirement, the platform calls an LLM, parses the structured response, and outputs a formatted, saved set of test cases ,ready for QA pipelines or manual review.
 
 ---
 
