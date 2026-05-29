@@ -1,4 +1,4 @@
-# 🧪 AI-Powered RAG Test Case Generator
+#  AI-Powered RAG Test Case Generator
 
 
 **Enterprise AI platform for intelligent test case generation and evaluation using LLMs and RAG.**
@@ -10,7 +10,7 @@ Given a plain-language software requirement, the platform calls an LLM, parses t
 
 ---
 
-## ✨ What it does
+##  What it does
 
 Upload a requirements PDF — get back a complete, validated test suite in seconds.
 
@@ -18,7 +18,7 @@ This tool doesn't just wrap an LLM. It implements a full GenAI engineering pipel
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 ```
 SRS PDF
@@ -55,7 +55,7 @@ Streamlit UI
 
 ---
 
-## 🚀 Features
+##  Features
 
 - **RAG-powered generation** — test cases are grounded in your actual requirements, not hallucinated from thin air
 - **Multi-layer evaluation** — every generated test case is scored for schema validity, completeness, automation suitability, and requirement grounding
@@ -67,7 +67,7 @@ Streamlit UI
 
 ---
 
-## 🔧 Tech Stack
+##  Tech Stack
 
 | Layer | Technologies |
 |---|---|
@@ -82,7 +82,7 @@ Streamlit UI
 
 ---
 
-## 📦 Installation
+##  Installation
 
 ### Prerequisites
 
@@ -120,7 +120,7 @@ LANGSMITH_PROJECT=your_project_name      # optional
 
 ---
 
-## ▶️ Running the app
+##  Running the app
 
 ```bash
 streamlit run app.py
@@ -132,7 +132,7 @@ Then open [http://localhost:8501](http://localhost:8501) in your browser.
 
 ---
 
-## 🧠 How the pipeline works
+## How the pipeline works
 
 ### 1. Document ingestion
 The SRS PDF is parsed, cleaned, and split into semantic chunks. Each chunk is embedded using a Sentence Transformer model and stored in a vector index.
@@ -191,7 +191,7 @@ ai-test-case-generator/
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions are welcome! Please open an issue first to discuss what you'd like to change.
 
@@ -200,18 +200,9 @@ Contributions are welcome! Please open an issue first to discuss what you'd like
 streamlit run app.py --server.runOnSave true
 ```
 
----
 
-## 📄 License
 
-MIT License — see [LICENSE](LICENSE) for details.
+##  Author
 
----
+Built by [Ambika Sudhakar]
 
-## 👤 Author
-
-Built by [Ambika Sudhakart](github.com/ambksud90)
-
----
-
-> **Note on Streamlit warnings** — you may see `ModuleNotFoundError: No module named 'torchvision'` in the console when Streamlit's file watcher scans the `transformers` library. This is a harmless watcher-only error; `torchvision` is not required by this project. The app runs normally.
