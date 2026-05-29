@@ -17,19 +17,36 @@ def print_test_cases(cases: list[dict]) -> None:
 
         print(f"\n{separator}")
 
-        print(f"[{tc.get('id', 'N/A')}] {tc.get('scenario', '')}")
-
+        # ── Header ───────────────────────────────────────────────────────
+        print(f"[{tc.get('id', 'N/A')}] {tc.get('scenario', 'N/A')}")
         print(
-            f"Type: {tc.get('type', '')} | "
-            f"Priority: {tc.get('priority', '')}"
+            f"Module: {tc.get('module', 'N/A')} | "
+            f"Category: {tc.get('category', 'N/A')} | "
+            f"Type: {tc.get('test_type', 'N/A')} | "   # ← was 'type' (wrong)
+            f"Priority: {tc.get('priority', 'N/A')} | "
+            f"Risk: {tc.get('risk_level', 'N/A')} | "
+            f"Automation: {tc.get('automation_candidate', 'N/A')}"
         )
 
         print(separator)
 
+        # ── Preconditions ─────────────────────────────────────────────────
+        preconditions = tc.get("preconditions", "")
+        if preconditions:
+            print(f"Preconditions: {preconditions}")
+
+        # ── Test Data ─────────────────────────────────────────────────────
+        test_data = tc.get("test_data", {})
+        if test_data:
+            print("Test Data:")
+            for key, value in test_data.items():
+                print(f"  {key}: {value}")
+
+        # ── Steps ─────────────────────────────────────────────────────────
         print("Steps:")
-
         for i, step in enumerate(tc.get("steps", []), 1):
-
             print(f"  {i}. {step}")
 
-        print(f"\nExpected: {tc.get('expected', '')}\n")
+        # ── Expected Result ───────────────────────────────────────────────
+        print(f"\nExpected: {tc.get('expected_result', 'N/A')}")  # ← was 'expected' (wrong)
+        print(f"Status:   {tc.get('status', 'Not Executed')}\n")

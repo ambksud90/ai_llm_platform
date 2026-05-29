@@ -1,6 +1,41 @@
-venv/
-.env
+# Python
 __pycache__/
-outputs/
 *.pyc
+*.pyo
+
+# Environment
+.env
+venv/
+
+# Secrets
+*.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
 .DS_Store
+
+# Generated files
+outputs/
+*.log
+*.json
+
+# Vector databases
+chroma_db/
+chromadb/
+*.sqlite3
+
+# LangSmith traces/cache
+.langsmith/
+
+# HuggingFace cache
+.cache/
+
+# Test files
+.pytest_cache/
+
+# Requirement documents / user uploads
+src/generation/requirements/
+*.pdf

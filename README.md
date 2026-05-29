@@ -1,222 +1,217 @@
-# ai_llm_platform
+# 🧪 AI-Powered RAG Test Case Generator
+
 
 **Enterprise AI platform for intelligent test case generation and evaluation using LLMs and RAG.**
 
 Given a plain-language software requirement, the platform calls an LLM, parses the structured response, and outputs a formatted, saved set of test cases ,ready for QA pipelines or manual review.
+=======
+> Automatically generate structured, grounded, and evaluated test cases from Software Requirement Specification (SRS) documents using RAG pipelines, LLMs, and multi-layer AI evaluation.
+
 
 ---
 
-## Table of Contents
+## ✨ What it does
 
-- [Overview](#overview)
-- [Architecture](#architecture)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [Usage](#usage)
-- [Sample Output](#sample-output)
-- [Configuration](#configuration)
-- [Roadmap](#roadmap)
-- [Tech Stack](#tech-stack)
+Upload a requirements PDF — get back a complete, validated test suite in seconds.
+
+This tool doesn't just wrap an LLM. It implements a full GenAI engineering pipeline: it parses your SRS, builds a semantic knowledge base, retrieves relevant context, generates structured test cases, and then evaluates each one for quality, completeness, and hallucinations — all before anything reaches your screen.
 
 ---
 
-## Overview
-
-Manual test case creation is slow and inconsistent. This platform automates it: you describe a software requirement in natural language, and the LLM generates structured, actionable test cases covering happy paths, edge cases, and failure scenarios.
-
-**Core capabilities:**
-- Dynamic prompt construction from user-supplied requirements
-- LLM API integration for test case generation
-- Structured JSON output parsing and validation
-- Formatted terminal display + file persistence
-- Modular, extensible architecture (generation pipeline, RAG evaluation — coming soon)
-
----
-
-## Architecture
+## 🏗️ Architecture
 
 ```
-User Input (requirement)
-        │
-        ▼
-┌─────────────────┐
-│  prompt_builder │  Constructs structured LLM prompt
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│   api_client    │  Calls LLM API (e.g. HuggingFace / OpenAI-compatible)
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│     parser      │  Extracts and validates JSON from LLM response
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│   formatter     │  Prints test cases to terminal
-└────────┬────────┘
-         │
-         ▼
-  outputs/test_cases.json
+SRS PDF
+  │
+  ▼
+Requirement Parser      ← PDF extraction + text chunking
+  │
+  ▼
+Embedding Model         ← Sentence Transformers
+  │
+  ▼
+Vector Store            ← Semantic similarity index
+  │
+  ▼
+RAG Retriever           ← Context-aware retrieval
+  │
+  ▼
+LLM Generator           ← Structured JSON test case generation
+  │
+  ├──────────────────────────────────┐
+  ▼                ▼                 ▼
+Schema Validator   Hallucination     Quality Scorer
+                   Detector
+  │
+  ▼
+Deduplication Engine
+  │
+  ▼
+Final Test Suite (JSON)
+  │
+  ▼
+Streamlit UI
 ```
 
 ---
 
-## Project Structure
+## 🚀 Features
+
+- **RAG-powered generation** — test cases are grounded in your actual requirements, not hallucinated from thin air
+- **Multi-layer evaluation** — every generated test case is scored for schema validity, completeness, automation suitability, and requirement grounding
+- **Hallucination detection** — semantic similarity scoring flags unsupported or invented test steps
+- **Deduplication engine** — removes redundant cases before output
+- **Structured JSON output** — ready for import into test management tools
+- **Streamlit UI** — drag-and-drop SRS upload, live pipeline progress, and result dashboard
+- **LangSmith observability** — full LLM tracing, token analysis, and prompt monitoring
+
+---
+
+## 🔧 Tech Stack
+
+| Layer | Technologies |
+|---|---|
+| LLM APIs | Groq, Gemini / OpenAI-compatible |
+| Embeddings | `sentence-transformers`, HuggingFace Transformers |
+| Vector Search | FAISS / ChromaDB |
+| Document Processing | PDF loaders, text extraction pipelines |
+| Evaluation | Custom schema + hallucination + quality evaluators |
+| Observability | LangSmith |
+| UI | Streamlit |
+| Language | Python 3.10+ |
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+
+- Python 3.10+
+- An API key for your chosen LLM provider (Groq, Gemini, or OpenAI-compatible)
+
+### Steps
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/your-username/ai-test-case-generator.git
+cd ai-test-case-generator
+
+# 2. Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate        # macOS/Linux
+venv\Scripts\activate           # Windows
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Set up environment variables
+cp .env.example .env
+# Edit .env and add your API keys
+```
+
+### Environment variables
+
+```env
+GROQ_API_KEY=your_groq_api_key
+GEMINI_API_KEY=your_gemini_api_key       # optional
+LANGSMITH_API_KEY=your_langsmith_key     # optional, for tracing
+LANGSMITH_PROJECT=your_project_name      # optional
+```
+
+---
+
+## ▶️ Running the app
+
+```bash
+streamlit run app.py
+```
+
+Then open [http://localhost:8501](http://localhost:8501) in your browser.
+
+> **Note:** On first run, the embedding model downloads automatically (~90MB). Subsequent runs use the cached model.
+
+---
+
+## 🧠 How the pipeline works
+
+### 1. Document ingestion
+The SRS PDF is parsed, cleaned, and split into semantic chunks. Each chunk is embedded using a Sentence Transformer model and stored in a vector index.
+
+### 2. Context retrieval (RAG)
+For each test area being generated, the most relevant requirement chunks are retrieved via cosine similarity search and injected into the LLM prompt as grounding context.
+
+### 3. Test case generation
+A structured system prompt instructs the LLM to generate test cases as valid JSON, covering happy paths, negative scenarios, boundary values, security, and accessibility.
+
+### 4. Evaluation pipeline
+Each generated test case passes through three evaluators:
+
+| Evaluator | What it checks |
+|---|---|
+| Schema validator | Required fields, correct types, no missing data |
+| Quality scorer | Test depth, completeness, automation suitability |
+| Hallucination detector | Grounding score vs. SRS embeddings, unsupported content |
+
+### 5. Deduplication + output
+Near-duplicate test cases are removed. The final validated suite is returned as structured JSON and visualised in the UI.
+
+---
+
+## 📊 Evaluation metrics
+
+Each test case receives scores across four dimensions:
+
+- **Schema score** — are all required fields present and correctly typed?
+- **Completeness score** — does it have preconditions, steps, test data, and expected results?
+- **Automation suitability** — can this case be automated, and is it written to support that?
+- **Grounding score** — how semantically similar is the test case to the source requirements? Low scores flag potential hallucinations.
+
+---
+
+## 🗂️ Project structure
 
 ```
-ai_llm_platform/
-├── src/
-│   └── generation/
-│       ├── main.py            # Pipeline entry point
-│       ├── api_client.py      # LLM API call handler
-│       ├── prompt_builder.py  # Dynamic prompt construction
-│       ├── parser.py          # JSON extraction from LLM response
-│       └── formatter.py       # Terminal output formatting
-├── outputs/
-│   └── test_cases.json        # Generated test cases (auto-saved)
+ai-test-case-generator/
+├── app.py                   # Streamlit entry point
+├── pipeline/
+│   ├── parser.py            # PDF ingestion + chunking
+│   ├── embedder.py          # Sentence Transformer embedding
+│   ├── retriever.py         # Vector similarity search
+│   ├── generator.py         # LLM test case generation
+│   └── evaluator.py         # Schema + quality + hallucination eval
+├── utils/
+│   ├── deduplicator.py      # Duplicate detection
+│   └── json_repair.py       # LLM output parsing + repair
+├── prompts/
+│   └── system_prompt.py     # Prompt templates
 ├── requirements.txt
-├── .gitignore
+├── .env.example
 └── README.md
 ```
 
 ---
 
-## Getting Started
+## 🤝 Contributing
 
-### Prerequisites
-
-- Python 3.10+
-- A HuggingFace API token (or compatible LLM API key)
-
-### Installation
+Contributions are welcome! Please open an issue first to discuss what you'd like to change.
 
 ```bash
-# Clone the repository
-git clone https://github.com/ambksud90/ai_llm_platform.git
-cd ai_llm_platform
-
-# Create and activate a virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-### Environment Setup
-
-Create a `.env` file in the root directory (see `.env.example`):
-
-```bash
-cp .env.example .env
-```
-
-Fill in your API credentials:
-
-```env
-HF_API_TOKEN=your_huggingface_token_here
-MODEL_NAME=mistralai/Mistral-7B-Instruct-v0.2   # or your preferred model
-API_BASE_URL=https://api-inference.huggingface.co/models
+# Run with hot-reload for development
+streamlit run app.py --server.runOnSave true
 ```
 
 ---
 
-## Usage
+## 📄 License
 
-```bash
-cd src/generation
-python main.py
-```
-
-You will be prompted to enter a software requirement:
-
-```
-Enter software requirement:
-
-> User should be able to log in with email and password
-```
-
-The pipeline will call the LLM, parse the response, display the test cases in the terminal, and save them to `outputs/test_cases.json`.
+MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
-## Sample Output
+## 👤 Author
 
-```json
-[
-  {
-    "test_id": "TC_001",
-    "title": "Successful login with valid credentials",
-    "preconditions": "User account exists with verified email",
-    "steps": [
-      "Navigate to login page",
-      "Enter valid email address",
-      "Enter correct password",
-      "Click 'Login' button"
-    ],
-    "expected_result": "User is authenticated and redirected to dashboard",
-    "category": "Happy Path"
-  },
-  {
-    "test_id": "TC_002",
-    "title": "Login fails with incorrect password",
-    "preconditions": "User account exists",
-    "steps": [
-      "Navigate to login page",
-      "Enter valid email address",
-      "Enter incorrect password",
-      "Click 'Login' button"
-    ],
-    "expected_result": "Error message displayed: 'Invalid credentials'",
-    "category": "Negative Test"
-  }
-]
-```
+Built by [Ambika Sudhakart](github.com/ambksud90)
 
 ---
 
-## Configuration
-
-| Variable | Description | Default |
-|---|---|---|
-| `HF_API_TOKEN` | HuggingFace API token | Required |
-| `MODEL_NAME` | LLM model to use | `mistralai/Mistral-7B-Instruct-v0.2` |
-| `API_BASE_URL` | API endpoint base URL | HuggingFace Inference API |
-
----
-
-## Roadmap
-
-- [x] LLM-based test case generation pipeline
-- [x] Modular architecture (api_client, parser, formatter, prompt_builder)
-- [x] JSON output persistence
-- [ ] RAG module — retrieve relevant test case examples to improve generation quality
-- [ ] Evaluation module — score generated test cases for coverage and correctness
-- [ ] REST API / FastAPI interface
-- [ ] Support for multiple LLM providers (OpenAI, Anthropic, local models via Ollama)
-- [ ] CI/CD pipeline with GitHub Actions
-
----
-
-## Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Language | Python 3.10+ |
-| LLM Framework | HuggingFace Transformers, LangChain |
-| Models | Mistral, LLaMA (via HuggingFace Inference API) |
-| ML Libraries | PyTorch, Tokenizers, Safetensors |
-| Experiment Tracking | Weights & Biases, TensorBoard |
-| Containerisation | Docker (coming soon) |
-| Output | JSON |
-
----
-
-## Author
-
-**Ambika Sudhakar** — Data & AI Engineer  
-MSc Artificial Intelligence, FAU Erlangen-Nürnberg  
-[LinkedIn](https://linkedin.com/in/ambika-sudhakar62372887) · [GitHub](https://github.com/ambksud90)
+> **Note on Streamlit warnings** — you may see `ModuleNotFoundError: No module named 'torchvision'` in the console when Streamlit's file watcher scans the `transformers` library. This is a harmless watcher-only error; `torchvision` is not required by this project. The app runs normally.
