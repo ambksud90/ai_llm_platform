@@ -37,7 +37,7 @@ def extract_json(text: str):
 
     text = _clean_text(text)
 
-    # Strategy 1: direct parse on full cleaned text
+  
     try:
         parsed = json.loads(text)
         logger.info("JSON parsed successfully (direct)")
@@ -45,7 +45,7 @@ def extract_json(text: str):
     except json.JSONDecodeError:
         pass
 
-    # Strategy 2: extract JSON block then parse
+
     try:
         json_block = _extract_json_block(text)
         parsed = json.loads(json_block)
@@ -54,7 +54,7 @@ def extract_json(text: str):
     except (json.JSONDecodeError, ValueError):
         pass
 
-    # Strategy 3: repair then parse (handles missing commas, trailing commas, etc.)
+  
     try:
         json_block = _extract_json_block(text)
         repaired = repair_json(json_block)
@@ -64,7 +64,6 @@ def extract_json(text: str):
     except Exception:
         pass
 
-    # Strategy 4: repair the full text as last resort
     try:
         repaired = repair_json(text)
         parsed = json.loads(repaired)

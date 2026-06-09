@@ -13,13 +13,9 @@ from src.generation.validator.deduplicator import (
 )
 from langsmith import traceable
 
-# ── logger must come before any function that uses it ──
 logger = logging.getLogger(__name__)
 
 
-# ─────────────────────────────────────────────
-#  MODULE DEFINITIONS
-# ─────────────────────────────────────────────
 
 MODULES = [
     {

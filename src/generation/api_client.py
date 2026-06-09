@@ -20,7 +20,7 @@ HF_TOKEN     = os.getenv("HF_TOKEN")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 HF_API_URL   = "https://router.huggingface.co/v1/chat/completions"
 
-# Model routing — map HF model names to Groq equivalents
+
 GROQ_MODEL_MAP = {
 
     "Qwen/Qwen2.5-7B-Instruct":
@@ -36,7 +36,7 @@ GROQ_MODEL_MAP = {
         "llama-3.1-8b-instant",
 }
 
-# Retry config
+
 MAX_RETRIES     = 3
 RETRY_WAIT      = 30
 REQUEST_TIMEOUT = 300

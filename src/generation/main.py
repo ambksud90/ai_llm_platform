@@ -3,9 +3,7 @@ import logging
 import os
 from pathlib import Path
 
-# ─────────────────────────────────────────────
-# ENV — LOAD BEFORE LANGSMITH
-# ─────────────────────────────────────────────
+
 
 from dotenv import load_dotenv
 
@@ -53,9 +51,7 @@ print(
     f"{os.getenv('LANGCHAIN_ENDPOINT')}"
 )
 
-# ─────────────────────────────────────────────
-# IMPORTS
-# ─────────────────────────────────────────────
+
 
 from pdf_loader import extract_pdf_text
 from orchestrator import generate_all_modules
